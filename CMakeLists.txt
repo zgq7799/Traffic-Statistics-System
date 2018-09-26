@@ -12,23 +12,13 @@ add_executable(${PROJECT_NAME} ${SRC_LIST} ${CURRENT_HEADERS})
 
 set(GLOBAL OpenCV_LIBS
     libopencv_core.so
-#    libopencv_face.so
     libopencv_highgui.so
     libopencv_imgcodecs.so
     libopencv_imgproc.so
-#    libopencv_calib3d.so
     libopencv_features2d.so
-#    libopencv_flann.so
     libopencv_imgproc.so
-#    libopencv_ml.so
-#    libopencv_objdetect.so
-#    libopencv_photo.so
-#    libopencv_shape.so
-#    libopencv_stitching.so
-#    libopencv_superres.so
     libopencv_video.so
     libopencv_videoio.so
-#    libopencv_videostab.so
     libopencv_tracking.so
     )
 
