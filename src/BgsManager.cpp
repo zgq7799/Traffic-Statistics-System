@@ -1,15 +1,15 @@
-#include <MyBgs.h>
+#include <BgsManager.h>
 #include <bgslibrary.h>
 
-MyBgs::MyBgs() {
+BgsManager::BgsManager() {
     bgs = NULL;
 }
 
-MyBgs::~MyBgs() {
+BgsManager::~BgsManager() {
 
 }
 
-void MyBgs::create_bgs(BgsNameEnum bgs_name) {
+void BgsManager::create_bgs(BgsNameEnum bgs_name) {
     switch (bgs_name) {
      case FrameDifferenceBGS:
          bgs = new FrameDifference();
@@ -120,11 +120,68 @@ void MyBgs::create_bgs(BgsNameEnum bgs_name) {
          bgs = new LOBSTER();
          break;
      default:
-         bgs = new DPAdaptiveMedian();
-         break;
+        bgs = NULL;
      }
 }
 
-void MyBgs::process(Mat input, Mat &img_foreground, Mat &img_background) {
+void BgsManager::process(Mat input, Mat &img_foreground, Mat &img_background) {
     bgs->process(input,img_foreground,img_background);
+}
+
+BgsNameEnum BgsManager::get_algorithm_name() {
+    int num = 0;
+    BgsNameEnum name;
+    print_all_algorithms();
+    while(true) {
+        cin>>num;
+        if(num >=1 && num <=36) {
+            name = (BgsNameEnum)num;
+            break;
+        } else {
+            cout<<"Input Error!"<<endl;
+            cout<<"Your Choice : ";
+        }
+    }
+    return name;
+}
+
+void BgsManager::print_all_algorithms() {
+    cout<<"======BGSLibrary Algorithms List(Have deleted some errors)======\n \
+      [1]FrameDifferenceBGS\n \
+      [2]StaticFrameDifferenceBGS\n \
+      [3]WeightedMovingMeanBGS\n \
+      [4]WeightedMovingVarianceBGS\n \
+      [5]MixtureOfGaussianV1BGS\n \
+      [6]MixtureOfGaussianV2BGS\n \
+      [7]AdaptiveBackgroundLearning\n \
+      [8]AdaptiveSelectiveBackgroundLearning\n \
+      [9]GMG\n \
+      [10]DPAdaptiveMedianBGS\n \
+      [11]DPGrimsonGMMBGS\n \
+      [12]DPZivkovicAGMMBGS\n \
+      [13]DPMeanBGS\n \
+      [14]DPWrenGABGS\n \
+      [15]DPPratiMediodBGS\n \
+      [16]DPEigenbackgroundBGS\n \
+      [17]DPTextureBGS\n \
+      [18]T2FGMM_UM\n \
+      [19]T2FGMM_UV\n \
+      [20]T2FMRF_UM\n \
+      [21]T2FMRF_UV\n \
+      [22]FuzzySugenoIntegral\n \
+      [23]FuzzyChoquetIntegral\n \
+      [24]LBSimpleGaussian\n \
+      [25]LBFuzzyGaussian\n \
+      [26]LBMixtureOfGaussians\n \
+      [27]LBAdaptiveSOM\n \
+      [28]LBFuzzyAdaptiveSOM\n \
+      [29]MultiLayerBGS\n \
+      [30]VuMeter\n \
+      [31]KDE\n \
+      [32]IndependentMultimodalBGS\n \
+      [33]SJN_MultiCueBGS\n \
+      [34]SigmaDeltaBGS\n \
+      [35]SuBSENSEBGS\n \
+      [36]LOBSTERBGS" <<endl;
+      cout<<"Your Choice : ";
 }

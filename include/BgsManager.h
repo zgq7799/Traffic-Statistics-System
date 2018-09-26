@@ -6,18 +6,14 @@
 /**
  * 前景抽取算法类
  *
- * @brief The MyBgs class
+ * @brief The BgsManager class
  */
 
-class MyBgs {
+class BgsManager {
 public:
-    MyBgs();
-    ~MyBgs();
-
-private:
-    /* IBGS是各前景抽取算法类的抽象类 */
-    IBGS *bgs;
-
+    BgsManager();
+    ~BgsManager();
+    BgsNameEnum get_algorithm_name();
     /**
      * 根据前景抽取算法的名称创建对应实例
      *
@@ -34,4 +30,11 @@ private:
      * @param background 背景二值化图像
      */
     void process(Mat input,Mat &img_foreground,Mat &img_background);
+
+
+
+private:
+    /* IBGS是各前景抽取算法类的抽象类 */
+    IBGS *bgs;
+    void print_all_algorithms();
 };

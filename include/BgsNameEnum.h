@@ -6,6 +6,7 @@
  * @brief The BgsNameEnum enum
  */
 enum BgsNameEnum{
+  ZERONULL,
   FrameDifferenceBGS,
   StaticFrameDifferenceBGS,
   WeightedMovingMeanBGS,

@@ -4,7 +4,7 @@
 #include <TrackerManager.h>
 
 /**
- * 物体方向
+ * 全局物体流向
  * @brief The DIRECTION enum
  */
 enum DIRECTION {
@@ -20,7 +20,7 @@ enum DIRECTION {
  * @brief The DIRECTION_FLOW enum
  */
 enum DIRECTION_FLOW {
-    DIRECTION_FLOW_NONE,
+    DIRECTION_FLOW_NONE=0,
     DIRECTION_FLOW_IN,
     DIRECTION_FLOW_OUT
 };
@@ -31,9 +31,7 @@ enum DIRECTION_FLOW {
  */
 struct ST_TRACKER_INFO {
     int tracker_id; /* 跟踪器ID */
-    DIRECTION_FLOW direct; /* 跟踪器方向 */
-    bool is_in_counted; /* 跟踪器进入是否统计 */
-    bool is_out_counted; /* 跟踪器出去是否统计 */
+    DIRECTION_FLOW direct; /* 跟踪器方向标记 */
 };
 
 /**
@@ -52,20 +50,33 @@ public:
     StatisticsManager();
     ~StatisticsManager();
 
+    DIRECTION in_direct; /* 计数窗口的进入方向 */
+    DIRECTION out_direct; /* 计数窗口的出去方向 */
+
     /* 初始化 */
-    void create(TrackManager* ptm,Rect count_window,DIRECTION in=DIRECTION_NONE,DIRECTION out=DIRECTION_NONE);
+    void create(TrackerManager* ptm,
+                Rect count_window,
+                DIRECTION in=DIRECTION_NONE,
+                DIRECTION out=DIRECTION_NONE);
     void on_begin_count();
+    /*
+       基于一个假设：跟踪器刚进入窗口时，一定离它进入的那个边界更近；
+       例如：
+           1.从左(in)至右(out)进入：分配给tracker统计信息时，一定in_dist < out_dist,故标记OUT；
+                             离开：in_dist > out_dist,故out++;
+           2.从右(out)至左(in)进入：分配给tracker统计信息时，一定in_dist > out_dist,故标记IN；
+                             离开：in_dist < out_dist,故in++;
+    */
     void on_count();
     void on_end_count();
-    void get_statistics_inf(STATISTICS_INFO &info);
+    void display_statistics(STATISTICS_INFO info,Mat &canvas,Rect count_window);
+    STATISTICS_INFO get_statistics_inf();
 
 private:
+    TrackerManager* ptm; /* 跟踪器管理 */
     bool count_status; /* 是否处于计数状态 */
     Rect count_window; /* 计数ROI */
-    DIRECTION in_diect; /* 计数窗口的进入方向 */
-    DIRECTION out_direct; /* 计数窗口的出去方向 */
     STATISTICS_INFO st_info; /* 窗口统计 */
-    TrackManager* ptm;      /* 跟踪器管理 */
     vector<ST_TRACKER_INFO> tracker_all_inf; /* 跟踪器集合 */
 };
 
