@@ -1,3 +1,3 @@
 # Traffic-Statistics-System
 
-A system based on KCF and background subtraction algorithm for traffic statistics.
+A system based on Kalman Filter and background subtraction algorithms for traffic statistics.
